@@ -10,6 +10,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="shared-styles.html">
+<link rel="import" href="utils/timestamp-to-date.html">
+<link rel="import" href="utils/interruptor-element.html">
 
 <dom-module id="my-view3">
   <template>
@@ -23,17 +25,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <div class="card">
       <div class="circle">3</div>
-      <h1>lalala</h1>
-      <p>Modus commodo minimum eum te, vero utinam assueverit per eu.</p>
-      <p>Ea duis bonorum nec, falli paulo aliquid ei eum.Has at minim mucius aliquam, est id tempor laoreet.Pro saepe pertinax ei, ad pri animal labores suscipiantur.</p>
+      <h1 on-click="cambiar">lalala</h1>
+      <timestamp-to-date timestamp="10"></timestamp-to-date>
+      <timestamp-to-date timestamp="1518716320489"></timestamp-to-date>
+      <timestamp-to-date id="t3"></timestamp-to-date>
+
+      <interruptor-element texto="tienes hambre">
+        <img src="https://desarrolloweb.com/archivoimg/general/4288.jpg" alt="">
+        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dolore error voluptate aspernatur perspiciatis possimus, voluptas veniam quae. Consectetur nemo maiores laboriosam corrupti cupiditate culpa adipisci totam! Laudantium voluptate nesciunt quae.</p>
+      </interruptor-element>
+      <interruptor-element activo disabled>dfdfsdf fsf sdf s ddsg sd</interruptor-element>
     </div>
   </template>
 
   <script>
     class MyView3 extends Polymer.Element {
       static get is() { return 'my-view3'; }
+
+      cambiar() {
+        this.$.t3.timestamp = 900000000;
+      }
+
     }
 
+    
+    
     window.customElements.define(MyView3.is, MyView3);
   </script>
 </dom-module>

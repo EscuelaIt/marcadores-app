@@ -1,0 +1,79 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="interruptor-element">
+  <template>
+    <style>
+      :host {
+        display: inline-block;
+        user-select: none;
+        cursor: pointer;
+      }
+      div {
+        display: inline-block;
+        padding: 10px;
+        border-radius: 5px;
+      }
+      .activo {
+        background-color: orangered;
+        color: white;
+      }
+      .inactivo {
+        background-color: #ddd;
+      }
+    </style>
+    
+    <div class$="[[activoClass]]">
+      <slot></slot>
+    </div>
+
+  </template>
+
+  <script>
+    class InterruptorElement extends Polymer.Element {
+      /**
+       * String providing the tag name to register the element under.
+       */
+      static get is() {
+        return 'interruptor-element';
+      }
+
+      /**
+       * Object describing property-related metadata used by Polymer features
+       */
+      static get properties() {
+        return {
+          activo: {
+            type: Boolean,
+            value: false
+          },
+          disabled: {
+            type: Boolean,
+            value: false
+          },
+          activoClass: {
+            type: String,
+            computed: 'cambiarClass(activo, disabled)'
+          }
+        };
+      }
+
+      ready() {
+        super.ready();
+        this.addEventListener('click', () => this.activo = !this.activo );
+      }
+
+      cambiarClass(activo, disabled) {
+        if(disabled) {
+          return 'inactivo';
+        }
+        if(activo) {
+          return 'activo';
+        }
+        return 'inactivo';
+      }
+
+    }
+
+    window.customElements.define(InterruptorElement.is, InterruptorElement);
+  </script>
+</dom-module>

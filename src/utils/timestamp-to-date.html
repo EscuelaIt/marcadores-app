@@ -1,0 +1,46 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="timestamp-to-date">
+  <template>
+    <style>
+      :host {
+        display: block
+      }
+    </style>
+    [[date]]
+  </template>
+
+  <script>
+    class TimestampToDate extends Polymer.Element {
+      /**
+       * String providing the tag name to register the element under.
+       */
+      static get is() {
+        return 'timestamp-to-date';
+      }
+
+      /**
+       * Object describing property-related metadata used by Polymer features
+       */
+      static get properties() {
+        return {
+          timestamp: {
+            type: Number,
+            value: 0
+          },
+          date: {
+            type: String,
+            computed: 'toDate(timestamp)'
+          }
+        };
+      }
+
+      toDate(timestamp){
+        let date = new Date(timestamp);
+        return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`; 
+      }
+    }
+
+    window.customElements.define(TimestampToDate.is, TimestampToDate);
+  </script>
+</dom-module>

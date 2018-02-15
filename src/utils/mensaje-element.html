@@ -1,0 +1,29 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="mensaje-element">
+  <template>
+    <style>
+      :host {
+        display: block
+      }
+    </style>
+
+    <p>Hola!!</p>
+
+  </template>
+
+  <script>
+
+    class MensajeElement extends Polymer.Element {
+      /**
+       * String providing the tag name to register the element under.
+       */
+      static get is() {
+        return 'mensaje-element';
+      }
+
+    }
+
+    window.customElements.define(MensajeElement.is, MensajeElement);
+  </script>
+</dom-module>
