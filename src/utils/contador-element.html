@@ -1,0 +1,40 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="contador-element">
+  <template>
+    <style>
+      :host {
+        display: block
+      }
+    </style>
+
+    <button on-click="incrementar">Clic!</button>
+    <p>Has hecho [[contador]] clics</p>
+  </template>
+
+  <script>
+    class ContadorElement extends Polymer.Element {
+      /**
+       * String providing the tag name to register the element under.
+       */
+      static get is() {
+        return 'contador-element';
+      }
+
+      static get properties() {
+        return {
+          contador: {
+            type: Number,
+            value: 0
+          }
+        };
+      }
+
+      incrementar() {
+        this.contador++;
+      }
+    }
+
+    window.customElements.define(ContadorElement.is, ContadorElement);
+  </script>
+</dom-module>
