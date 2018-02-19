@@ -1,0 +1,53 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="shared-styles.html">
+
+
+
+<dom-module id="my-home">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+    </style>
+
+    <div class="card" id="container">
+      <div class="circle">1</div>
+      <h1>Home</h1>
+      <p>Bienvenidos a EscuelaIT</p>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora aperiam laboriosam eius soluta nulla dolores cum eaque iste ipsum odit maxime hic, quae molestias excepturi nihil libero adipisci enim iure.</p>
+      <p>Ex ipsa amet vitae veniam. Consequatur, eligendi exercitationem! Atque quae incidunt animi, quas tenetur eum dolorem perspiciatis laudantium quasi sequi officia recusandae deserunt cum reiciendis. Architecto blanditiis quaerat laboriosam dolorem?</p>
+      <p>Tempore nemo, fuga consectetur, quo eos reprehenderit suscipit omnis nulla voluptates perferendis iste vitae totam officia eius velit non architecto accusamus vero atque, maxime quaerat. Fuga debitis beatae adipisci fugiat!</p>
+      <p>Cumque ratione amet alias necessitatibus tempora cum, quos accusamus quo a debitis suscipit vero consequuntur voluptatum possimus unde neque exercitationem. Quia fuga neque sequi quidem maxime ipsum! Explicabo, deleniti ratione?</p>
+      <p>Necessitatibus nam, unde maxime odit commodi ratione at molestias, vitae in, quos ut. Tenetur fuga repudiandae expedita. Fugiat, architecto labore hic amet libero, a voluptatem unde nisi ea facilis dolorum?</p>
+      <p>Minus praesentium consequatur suscipit temporibus voluptatibus doloribus laudantium eos corporis eligendi magni nostrum ullam ratione, reiciendis dicta magnam culpa harum nam, aspernatur nesciunt? Asperiores, vero dolorem explicabo dolore soluta reprehenderit!</p>
+      <p>Repellat at obcaecati numquam saepe quae sint tempora officiis, porro eaque architecto pariatur aperiam non magnam exercitationem placeat eius repudiandae perspiciatis aliquid. Praesentium numquam animi iusto saepe mollitia repellat voluptate?</p>
+      <p>Voluptas officia aperiam dolorum, facilis quasi atque ex laboriosam accusamus vitae ullam veritatis inventore sit et natus assumenda illo nam. Impedit aperiam magni facere natus illo, mollitia totam placeat tempore?</p>
+    </div>
+
+
+
+  </template>
+
+  <script>
+    class MyHome extends Polymer.Element {
+      static get is() { return 'my-home'; }
+    }
+
+
+
+    window.customElements.define(MyHome.is, MyHome);
+  </script>
+</dom-module>

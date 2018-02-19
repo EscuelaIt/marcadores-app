@@ -9,9 +9,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="./utils/contador-element.html">
+<link rel="import" href="./utils/mensaje-element.html">
+
 <link rel="import" href="shared-styles.html">
 
-<dom-module id="my-view1">
+<dom-module id="my-contacto">
   <template>
     <style include="shared-styles">
       :host {
@@ -22,17 +25,29 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
 
     <div class="card">
-      <div class="circle">1</div>
-      <h1>Home</h1>
-      <p>Bienvenidos a EscuelaIT</p>
+      <h2>Contacto</h2>
+      <contador-element></contador-element>
+      <mensaje-element></mensaje-element>
     </div>
+
+    <button on-click="irLegales">Ir a legales</button>
   </template>
 
   <script>
-    class MyView1 extends Polymer.Element {
-      static get is() { return 'my-view1'; }
+    class MyContacto extends Polymer.Element {
+      static get is() { return 'my-contacto'; }
+
+      irLegales() {
+        this.dispatchEvent(new CustomEvent('navegar', {
+          bubbles: true,
+          composed: true,
+          detail: {
+            ruta: '/legales'
+          }
+        }));
+      }
     }
 
-    window.customElements.define(MyView1.is, MyView1);
+    window.customElements.define(MyContacto.is, MyContacto);
   </script>
 </dom-module>

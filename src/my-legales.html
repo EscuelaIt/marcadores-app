@@ -13,7 +13,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="utils/timestamp-to-date.html">
 <link rel="import" href="utils/interruptor-element.html">
 
-<dom-module id="my-view3">
+<dom-module id="my-legales">
   <template>
     <style include="shared-styles">
       :host {
@@ -24,23 +24,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
 
     <div class="card">
-      <div class="circle">3</div>
-      <h1 on-click="cambiar">lalala</h1>
-      <timestamp-to-date timestamp="10"></timestamp-to-date>
-      <timestamp-to-date timestamp="1518716320489"></timestamp-to-date>
-      <timestamp-to-date id="t3"></timestamp-to-date>
-
-      <interruptor-element texto="tienes hambre">
-        <img src="https://desarrolloweb.com/archivoimg/general/4288.jpg" alt="">
-        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dolore error voluptate aspernatur perspiciatis possimus, voluptas veniam quae. Consectetur nemo maiores laboriosam corrupti cupiditate culpa adipisci totam! Laudantium voluptate nesciunt quae.</p>
-      </interruptor-element>
-      <interruptor-element activo disabled>dfdfsdf fsf sdf s ddsg sd</interruptor-element>
+      <h2>Datos legales</h2>
+      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat, rem! Similique doloribus fugit quibusdam maxime odio recusandae eum sit aperiam voluptate totam et, vitae nihil eius fugiat tenetur mollitia perferendis.</p>
+      <p>Sunt numquam ex suscipit? Quae sed eius corporis deleniti explicabo perspiciatis. At, veritatis consectetur sint velit sapiente a eligendi libero nobis laborum enim, quae consequuntur quam, delectus voluptate maxime commodi.</p>
+      <p>Distinctio debitis amet nihil, fugiat, eos a numquam at eius praesentium nisi dolorum, odio magnam. Consequuntur harum voluptatem, inventore iste quos pariatur suscipit vitae sapiente impedit eaque aliquam deserunt fugit.</p>
     </div>
   </template>
 
   <script>
-    class MyView3 extends Polymer.Element {
-      static get is() { return 'my-view3'; }
+    class MyLegales extends Polymer.Element {
+      static get is() { return 'my-legales'; }
 
       cambiar() {
         this.$.t3.timestamp = 900000000;
@@ -50,6 +43,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     
     
-    window.customElements.define(MyView3.is, MyView3);
+    window.customElements.define(MyLegales.is, MyLegales);
   </script>
 </dom-module>

@@ -1,0 +1,31 @@
+
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../shared-styles.html">
+
+<dom-module id="app-logo">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: flex;
+        align-items: center;
+        font-weight: bold;
+        color: var(--primary-text-color, #444);
+      }
+      img {
+        width: 32px;
+        height: 32px;
+        margin-right: 5px;
+      }
+    </style>
+    <img src="/images/manifest/icon-48x48.png" alt="marcadores app">
+    MARCADORES APP
+  </template>
+
+  <script>
+    class AppLogo extends Polymer.Element {
+      static get is() { return 'app-logo'; }
+    }
+
+    window.customElements.define(AppLogo.is, AppLogo);
+  </script>
+</dom-module>

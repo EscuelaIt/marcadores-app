@@ -21,18 +21,32 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="my-icons.html">
+<link rel="import" href="./interfaz/app-logo.html">
 
-<link rel="lazy-import" href="my-view1.html">
-<link rel="lazy-import" href="my-view2.html">
-<link rel="lazy-import" href="my-view3.html">
+<link rel="lazy-import" href="my-home.html">
+<link rel="lazy-import" href="marcadores/marcador-nuevo.html">
+<link rel="lazy-import" href="my-contacto.html">
+<link rel="lazy-import" href="my-legales.html">
 <link rel="lazy-import" href="my-view404.html">
 
 <dom-module id="my-app">
   <template>
     <style>
       :host {
-        --app-primary-color: #4285f4;
-        --app-secondary-color: black;
+
+        --dark-primary-color:       #D32F2F;
+        --default-primary-color:    #F44336;
+        --light-primary-color:      #FFCDD2;
+        --text-primary-color:       #FFFFFF;
+        --accent-color:             #607D8B;
+        --primary-background-color: #FFCDD2;
+        --primary-text-color:       #444444;
+        --secondary-text-color:     #757575;
+        --disabled-text-color:      #BDBDBD;
+        --divider-color:            #BDBDBD;
+
+        --app-primary-color: var(--default-primary-color);
+        --app-secondary-color: var(--accent-color)
 
         display: block;
       }
@@ -41,9 +55,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: none;
       }
 
+      app-drawer {
+        --app-drawer-content-container: {
+          background-color: var(--default-primary-color);
+          color: #fff;
+        }
+       }
+
+       app-drawer app-toolbar {
+         background-color: #fff;
+       }
+
       app-header {
-        color: #fff;
-        background-color: var(--app-primary-color);
+        color: var(--primary-text-color);
+        background-color: #fff;
       }
 
       app-header paper-icon-button {
@@ -55,17 +80,38 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       .drawer-list a {
-        display: block;
+        display: flex;
+        align-items: center;
         padding: 0 16px;
         text-decoration: none;
-        color: var(--app-secondary-color);
+        color: var(--light-primary-color);
         line-height: 40px;
       }
 
+      .drawer-list span {
+        position: relative;
+        top: 2px;
+        margin-left: 10px;
+      }
+
+
       .drawer-list a.iron-selected {
-        color: black;
+        color: #fff;
         font-weight: bold;
       }
+
+      app-toolbar {
+        --app-toolbar-font-size: 14px;
+        font-weight: bold;
+        text-transform: uppercase;
+      }
+      
+      @media(min-width: 640px) {
+        #logoheader {
+          display: none;
+        }
+      }
+
     </style>
 
     <app-location
@@ -83,21 +129,41 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <app-drawer-layout fullbleed narrow="{{narrow}}">
       <!-- Drawer content -->
       <app-drawer id="drawer" slot="drawer" swipe-open="[[narrow]]">
-        <app-toolbar>Menu</app-toolbar>
+          <app-toolbar>
+            <div main-title>
+              <app-logo></app-logo>
+            </div>
+          </app-toolbar>
         <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-          <a name="view1" href="[[rootPath]]view1">View One</a>
-          <a name="view2" href="[[rootPath]]view2">View Two</a>
-          <a name="view3" href="[[rootPath]]view3">View Three</a>
+          <a name="home" href="[[rootPath]]home">
+            <iron-icon icon="my-icons:home"></iron-icon>  
+            <span>Home</span>
+          </a>
+          <a name="nuevo" href="[[rootPath]]nuevo">
+            <iron-icon icon="my-icons:playlist-add"></iron-icon>  
+            <span>Nuevo marcador</span>
+          </a>
+          <a name="contacto" href="[[rootPath]]contacto">
+            <iron-icon icon="my-icons:assignment"></iron-icon>  
+            <span>Contacto</span>
+          </a>
+          <a name="legales" href="[[rootPath]]legales">
+            <iron-icon icon="my-icons:info"></iron-icon>  
+            <span>Datos legales</span>
+          </a>
         </iron-selector>
       </app-drawer>
 
       <!-- Main content -->
       <app-header-layout has-scrolling-region>
 
-        <app-header slot="header" condenses reveals effects="waterfall">
+        <app-header slot="header" condenses reveals effects="waterfall" fixed>
           <app-toolbar>
             <paper-icon-button icon="my-icons:menu" drawer-toggle></paper-icon-button>
-            <div main-title>Marcadores App</div>
+            <div main-title class="logocontainer">
+              <app-logo id="logoheader"></app-logo>
+            </div>
+            <paper-icon-button icon="my-icons:account-circle"></paper-icon-button>
           </app-toolbar>
         </app-header>
 
@@ -106,11 +172,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             attr-for-selected="name"
             fallback-selection="view404"
             role="main">
-          <my-view1 name="view1"></my-view1>
-          <my-view2 name="view2"></my-view2>
-          <my-view3 name="view3"></my-view3>
+          <my-home name="home"></my-home>
+          <marcador-nuevo name="nuevo"></marcador-nuevo>
+          <my-contacto name="contacto"></my-contacto>
+          <my-legales name="legales"></my-legales>
           <my-view404 name="view404"></my-view404>
         </iron-pages>
+    
       </app-header-layout>
     </app-drawer-layout>
   </template>
@@ -140,10 +208,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         ];
       }
 
+      ready() {
+        super.ready();
+        this.addEventListener('navegar', (e) => {
+          this.set('route.path', e.detail.ruta);
+        });
+      }
+      
       _routePageChanged(page) {
         // If no page was found in the route data, page will be an empty string.
-        // Default to 'view1' in that case.
-        this.page = page || 'view1';
+        // Default to 'home' in that case.
+        this.page = page || 'home';
 
         // Close a non-persistent drawer when the page & route are changed.
         if (!this.$.drawer.persistent) {
@@ -153,7 +228,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _pageChanged(page) {
         // Load page import on demand. Show 404 page if fails
-        var resolvedPageUrl = this.resolveUrl('my-' + page + '.html');
+        var resolvedPageUrl;
+        if(page == 'nuevo') {
+          resolvedPageUrl = this.resolveUrl('marcadores/marcador-nuevo.html');
+        } else {
+          resolvedPageUrl = this.resolveUrl('my-' + page + '.html');
+        }
         Polymer.importHref(
             resolvedPageUrl,
             null,
