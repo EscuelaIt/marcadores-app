@@ -1,4 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-input/paper-textarea.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
 
 <dom-module id="marcador-nuevo">
   <template>
@@ -9,6 +12,14 @@
     </style>
     <div class="card">
       <h2>Nuevo marcador</h2>
+      
+      <paper-input label="Url" value="{{enlace.url}}"></paper-input>
+      <paper-input label="Título" value="{{enlace.titulo}}"></paper-input>
+      <paper-textarea label="Descripción" value="{{enlace.descripcion}}"></paper-textarea>
+      <div class="send">
+        <paper-button on-click="anadir">Añadir</paper-button>
+      </div>
+
     </div>
   </template>
 
@@ -38,6 +49,9 @@
         };
       }
 
+      anadir() {
+        console.log('vamos a añadir el marcador a la base de datos');
+      }
     }
 
     window.customElements.define(MarcadorNuevo.is, MarcadorNuevo);
