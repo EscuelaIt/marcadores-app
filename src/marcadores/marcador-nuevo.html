@@ -3,6 +3,7 @@
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner.html">
 
 <dom-module id="marcador-nuevo">
   <template>
@@ -10,10 +11,16 @@
       :host {
         display: block
       }
-      .baccion {
-        background-color: var(--default-primary-color);
-        color: #fff;
+      paper-button.baccion {
+        --paper-button: {
+          background-color: var(--app-primary-color);
+          color: #fff;
+        }
         margin-top: 5px;
+      }
+      paper-spinner {
+        position: relative;
+        top: 8px;
       }
     </style>
 
@@ -25,6 +32,7 @@
       content-type="application/json"
       on-response="insertResponse"
       on-error="insertError"
+      loading="{{loading}}"
     ></iron-ajax>
 
     <div class="card">
@@ -34,10 +42,12 @@
       <paper-input label="Título" value="{{enlace.titulo}}"></paper-input>
       <paper-textarea label="Descripción" value="{{enlace.descripcion}}"></paper-textarea>
       <div class="send">
-        <paper-button on-click="anadir" class="baccion">Añadir</paper-button>
+        <paper-button on-click="anadir" class="baccion" disabled="[[loading]]">Añadir</paper-button>
+        <paper-spinner active="[[loading]]"></paper-spinner>
       </div>
 
     </div>
+    
   </template>
 
   <script>
@@ -59,6 +69,10 @@
                 descripcion: ''
               };
             }
+          },
+          loading: {
+            type: Boolean,
+            value: false
           }
         };
       }
