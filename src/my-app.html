@@ -20,6 +20,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-toast/paper-toast.html">
 <link rel="import" href="my-icons.html">
 <link rel="import" href="./interfaz/app-logo.html">
 
@@ -46,6 +47,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         --divider-color:            #BDBDBD;
 
         --app-primary-color: var(--default-primary-color);
+        --primary-color: var(--default-primary-color);
         --app-secondary-color: var(--accent-color)
 
         display: block;
@@ -111,7 +113,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           display: none;
         }
       }
-
+      
+      #toasterror {
+        --paper-toast-background-color: #a33;
+      }
     </style>
 
     <app-location
@@ -181,6 +186,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     
       </app-header-layout>
     </app-drawer-layout>
+
+    <paper-toast id="toast"></paper-toast>
+    <paper-toast id="toasterror"></paper-toast>
   </template>
 
   <script>
@@ -213,6 +221,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.addEventListener('navegar', (e) => {
           this.set('route.path', e.detail.ruta);
         });
+        this.addEventListener('toast-error', (e) => this.toastError(e) );
+        this.addEventListener('toast-message', (e) => this.toastMessage(e) );
+
       }
       
       _routePageChanged(page) {
@@ -243,6 +254,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _showPage404() {
         this.page = 'view404';
+      }
+
+      toastMessage(e) {
+        this.$.toast.show({text: e.detail, duration: 3000});
+      }
+
+      toastError(e) {
+        this.$.toasterror.show({text: e.detail, duration: 3000});
       }
     }
 

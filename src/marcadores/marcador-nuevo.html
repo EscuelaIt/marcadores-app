@@ -2,6 +2,7 @@
 <link rel="import" href="../../bower_components/paper-input/paper-textarea.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 
 <dom-module id="marcador-nuevo">
   <template>
@@ -9,7 +10,23 @@
       :host {
         display: block
       }
+      .baccion {
+        background-color: var(--default-primary-color);
+        color: #fff;
+        margin-top: 5px;
+      }
     </style>
+
+    <iron-ajax
+      id="elinsertajax"
+      url="http://localhost:3333/marcadores"
+      handle-as="json"
+      method="post"
+      content-type="application/json"
+      on-response="insertResponse"
+      on-error="insertError"
+    ></iron-ajax>
+
     <div class="card">
       <h2>Nuevo marcador</h2>
       
@@ -17,40 +34,63 @@
       <paper-input label="Título" value="{{enlace.titulo}}"></paper-input>
       <paper-textarea label="Descripción" value="{{enlace.descripcion}}"></paper-textarea>
       <div class="send">
-        <paper-button on-click="anadir">Añadir</paper-button>
+        <paper-button on-click="anadir" class="baccion">Añadir</paper-button>
       </div>
 
     </div>
   </template>
 
   <script>
-    /**
-     * `marcador-nuevo` Description
-     *
-     * @summary ShortDescription.
-     * @customElement
-     * @polymer
-     * @extends {Polymer.Element}
-     */
+
     class MarcadorNuevo extends Polymer.Element {
-      /**
-       * String providing the tag name to register the element under.
-       */
+
       static get is() {
         return 'marcador-nuevo';
       }
 
-      /**
-       * Object describing property-related metadata used by Polymer features
-       */
       static get properties() {
         return {
-          
+          enlace: {
+            type: Object,
+            value: function() {
+              return {
+                url: 'http://',
+                titulo: '',
+                descripcion: ''
+              };
+            }
+          }
         };
       }
 
       anadir() {
-        console.log('vamos a añadir el marcador a la base de datos');
+        console.log('vamos a añadir el marcador a la base de datos', this.enlace);
+        this.$.elinsertajax.body = this.enlace;
+        this.$.elinsertajax.generateRequest();
+      }
+
+      insertResponse(e) {
+        this.dispatchEvent(new CustomEvent('toast-message', {
+          bubbles: true,
+          composed: true,
+          detail: 'Marcador insertado'
+        }));
+        console.log('insertado...', e.detail.succeeded);
+      }
+
+      insertError(e) {
+        let msg;
+        if(e.detail.request.status == 404) {
+          msg = 'Recurso no encontrado';
+        } else {
+          msg = 'Error al insertar';
+        }
+        this.dispatchEvent(new CustomEvent('toast-error', {
+          bubbles: true,
+          composed: true,
+          detail: msg
+        }));
+        console.log(msg, e.detail.request);
       }
     }
 
