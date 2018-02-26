@@ -21,8 +21,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-toast/paper-toast.html">
+
 <link rel="import" href="my-icons.html">
 <link rel="import" href="./interfaz/app-logo.html">
+<link rel="import" href="./marcadores/marcadores-service.html">
+
 
 <link rel="lazy-import" href="my-home.html">
 <link rel="lazy-import" href="marcadores/marcador-nuevo.html">
@@ -130,6 +133,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         data="{{routeData}}"
         tail="{{subroute}}">
     </app-route>
+
+    <marcadores-service></marcadores-service>
 
     <app-drawer-layout fullbleed narrow="{{narrow}}">
       <!-- Drawer content -->
