@@ -24,16 +24,6 @@
       }
     </style>
 
-    <iron-ajax
-      id="elinsertajax"
-      url="http://localhost:3333/marcadores"
-      handle-as="json"
-      method="post"
-      content-type="application/json"
-      on-response="insertResponse"
-      on-error="insertError"
-      loading="{{loading}}"
-    ></iron-ajax>
 
     <div class="card">
       <h2>Nuevo marcador</h2>
@@ -48,6 +38,8 @@
 
     </div>
     
+    <iron-meta id="elmeta"></iron-meta>
+
   </template>
 
   <script>
@@ -63,48 +55,48 @@
           enlace: {
             type: Object,
             value: function() {
-              return {
-                url: 'http://',
-                titulo: '',
-                descripcion: ''
-              };
+              return this.returnNewEnlace();
             }
           },
           loading: {
             type: Boolean,
             value: false
-          }
+          },
+          marcadoresService: Object
+        };
+      }
+
+      ready() {
+        super.ready();
+        this.marcadoresService = this.$.elmeta.byKey('marcadoresService');
+        this.marcadoresService.addEventListener('insert-response', (e) => this.insertResponse(e));
+        this.marcadoresService.addEventListener('insert-error', (e) => this.insertError(e));
+        console.log('-->', this.marcadoresService);
+      }
+
+      returnNewEnlace() {
+        return {
+          url: 'http://',
+          titulo: '',
+          descripcion: ''
         };
       }
 
       anadir() {
+        this.loading = true;
         console.log('vamos a añadir el marcador a la base de datos', this.enlace);
-        this.$.elinsertajax.body = this.enlace;
-        this.$.elinsertajax.generateRequest();
+        this.marcadoresService.insert( this.enlace );
       }
 
       insertResponse(e) {
-        this.dispatchEvent(new CustomEvent('toast-message', {
-          bubbles: true,
-          composed: true,
-          detail: 'Marcador insertado'
-        }));
-        console.log('insertado...', e.detail.succeeded);
+        this.loading = false;
+        let enlace = this.returnNewEnlace();
+        console.log('enlace', enlace);
+        this.set('enlace', enlace);
       }
 
       insertError(e) {
-        let msg;
-        if(e.detail.request.status == 404) {
-          msg = 'Recurso no encontrado';
-        } else {
-          msg = 'Error al insertar';
-        }
-        this.dispatchEvent(new CustomEvent('toast-error', {
-          bubbles: true,
-          composed: true,
-          detail: msg
-        }));
-        console.log(msg, e.detail.request);
+        this.loading = false;
       }
     }
 

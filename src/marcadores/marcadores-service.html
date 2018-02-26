@@ -15,6 +15,25 @@
       auto
     ></iron-ajax>  
 
+    <iron-ajax
+      id="elajaxinsert"
+      url="http://localhost:3333/marcadores"
+      method="post"
+      content-type="application/json"
+      on-response="insertResponse"
+      on-error="insertError"
+    ></iron-ajax>
+
+    <iron-ajax
+      id="elajaxdelete"
+      url="http://localhost:3333/marcadores/[[idDelete]]"      
+      method="delete"
+      on-response="deleteResponse"
+      on-error="deleteError"
+    ></iron-ajax>
+
+    <iron-meta id="elmetamarcadoresservice" key="marcadoresService"></iron-meta>
+
   </template>
 
   <script>
@@ -26,20 +45,57 @@
 
       static get properties() {
         return {
-          marcadores: Array,
+          marcadores: {
+            type: Array,
+            notify: true
+          },
           loading: {
             type: Boolean,
             value: false,
             notify: true
           },
+          idDelete: Number
         };
       }
 
       ready() {
         super.ready();
-
+        this.$.elmetamarcadoresservice.value = this;
       }
 
+      insert(enlace) {
+        this.$.elajaxinsert.body = enlace;
+        this.$.elajaxinsert.generateRequest();
+      }
+
+      insertResponse() {
+        console.log('insertResponse');
+        this.dispatchEvent(new CustomEvent('insert-response'));
+        this.feedbackPositivo('Marcador insertado');
+        this.$.elajax.generateRequest();
+      }
+
+      insertError() {
+        console.log('insertError');
+        this.dispatchEvent(new CustomEvent('insert-error'));
+        this.feedbackNegativo('Marcador NO insertado');
+      }
+
+      delete(id) {
+        this.idDelete = id;
+        console.log('marcadoresService voy a borrar', id);
+        this.$.elajaxdelete.generateRequest();
+      }
+
+      deleteResponse() {
+        this.feedbackPositivo('Enlace borrado');
+        this.dispatchEvent(new CustomEvent('delete-response'));
+        this.$.elajax.generateRequest();
+      }
+      deleteError() {
+        this.feedbackNegativo('Error al borrar el enlace');
+        this.dispatchEvent(new CustomEvent('delete-error'));
+      }
     }
 
     window.customElements.define(MarcadoresService.is, MarcadoresService);

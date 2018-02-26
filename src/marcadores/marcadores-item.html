@@ -1,0 +1,91 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item-body.html">
+<link rel="import" href="../../bower_components/paper-item/paper-icon-item.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+
+
+<dom-module id="marcadores-item">
+  <template>
+    <style>
+      :host {
+        display: block
+      }
+      paper-icon-item {
+        --paper-icon-item: {
+          padding-left: 10px;
+          padding-right: 0px;
+        }
+        --paper-item-icon-width: 35px;
+        --paper-item-icon: {
+          margin-left: 0;
+          padding-left: 0;
+        }
+      }
+      
+      .deleting {
+          background-color: #f99;
+      }
+      paper-icon-button.cancelbutton {
+        color: #e66; 
+      }
+      
+      paper-icon-button.editbutton {
+        color: rgb(84, 136, 145); 
+      }
+    </style>
+
+    <iron-meta id="elmeta"></iron-meta>
+
+    <paper-icon-item class$="[[classItem]]">
+      <iron-icon icon="my-icons:link" slot="item-icon"></iron-icon>
+      <paper-item-body two-line>
+        <div>[[marcador.titulo]]</div>
+        <div secondary>[[marcador.url]]</div>
+      </paper-item-body>
+      <paper-icon-button icon="my-icons:delete" class="cancelbutton" on-click="deleteItem" id="cancelb"></paper-icon-button>
+      <paper-icon-button icon="my-icons:mode-edit" class="editbutton"></paper-icon-button>
+    </paper-icon-item>
+
+  </template>
+
+  <script>
+
+    class MarcadoresItem extends Polymer.Element {
+      static get is() {
+        return 'marcadores-item';
+      }
+
+      static get properties() {
+        return {
+          marcador: {
+            type: Object,
+            observer: 'marcadorChanged'
+          },
+          marcadoresService: Object,
+          classItem: {
+            type: String,
+            value: ''
+          }
+        };
+      }
+
+      ready() {
+        super.ready();
+        this.marcadoresService = this.$.elmeta.byKey('marcadoresService');
+      }
+
+
+      deleteItem() {
+        this.marcadoresService.delete(this.marcador.id);
+        this.classItem = 'deleting';
+      }
+
+      marcadorChanged() {
+        this.classItem = '';
+      }
+    }
+
+    window.customElements.define(MarcadoresItem.is, MarcadoresItem);
+  </script>
+</dom-module>

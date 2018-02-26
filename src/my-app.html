@@ -134,7 +134,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         tail="{{subroute}}">
     </app-route>
 
-    <marcadores-service></marcadores-service>
+    <marcadores-service marcadores="{{marcadores}}" loading="{{marcadoresLoading}}"></marcadores-service>
 
     <app-drawer-layout fullbleed narrow="{{narrow}}">
       <!-- Drawer content -->
@@ -182,7 +182,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             attr-for-selected="name"
             fallback-selection="view404"
             role="main">
-          <my-home name="home"></my-home>
+          <my-home name="home" marcadores="[[marcadores]]" loading="{{marcadoresLoading}}"></my-home>
           <marcador-nuevo name="nuevo"></marcador-nuevo>
           <my-contacto name="contacto"></my-contacto>
           <my-legales name="legales"></my-legales>
