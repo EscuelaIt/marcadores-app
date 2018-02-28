@@ -13,6 +13,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
 
 <link rel="import" href="./user/login-form.html">
+<link rel="import" href="./mixins/NavigateMixin.html">
 <link rel="import" href="shared-styles.html">
 
 
@@ -34,7 +35,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <div class="loginform">
           <login-form user="{{user}}"></login-form>
           <div class="send">
-            <paper-button disabled="[[loading]]" on-click="doRegister">Registro</paper-button>
+            <paper-button disabled="[[loading]]" on-click="doRegister" class="baccion">Registro</paper-button>
             <paper-spinner active="[[loading]]"></paper-spinner>
           </div>
         </div>
@@ -47,7 +48,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </template>
 
   <script>
-    class MyRegister extends Polymer.Element {
+    class MyRegister extends NavigateMixin(Polymer.Element) {
       static get is() { return 'my-register'; }
       /**
         * Object describing property-related metadata used by Polymer features
@@ -79,13 +80,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       
       doRegister() {
         console.log('comenzamos proceso de registro', this.user);
+        this.loading = true;
+        this.userService.signIn(this.user);
       }
 
       signInResponse() {
         console.log('recibido login-response');
+        this.loading = false;
+        this.navigateTo('/login/');
       }
       signInError() {
         console.log('recibido login-error');
+        this.loading = false;                
       }
     }
 

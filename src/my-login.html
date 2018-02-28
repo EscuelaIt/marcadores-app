@@ -4,6 +4,7 @@
 <link rel="import" href="../bower_components/iron-meta/iron-meta.html">
 
 <link rel="import" href="./user/login-form.html">
+<link rel="import" href="./mixins/NavigateMixin.html">
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="my-login">
@@ -20,27 +21,32 @@
     <iron-meta id="meta"></iron-meta>
 
     <div class="card">
-      <h1>Login</h1>
-      <div class="logincontainer">
-        <div class="loginform">
-          
-          <login-form user="{{user}}"></login-form>
-          
-          <div class="send">
-            <paper-button disabled="[[loading]]" on-click="doLogin">Login</paper-button>
-            <paper-spinner active="[[loading]]"></paper-spinner>
+      <template is="dom-if" if="[[!loggedIn]]">
+        <h1>Login</h1>
+        <div class="logincontainer">
+          <div class="loginform">
+            
+            <login-form user="{{user}}"></login-form>
+            
+            <div class="send">
+              <paper-button disabled="[[loading]]" on-click="doLogin" class="baccion">Login</paper-button>
+              <paper-spinner active="[[loading]]"></paper-spinner>
+            </div>
+          </div>
+          <div>
+            <h3>¿No tienes cuenta?</h3>
+            <a href="/register">Regístrate como usuario</a>
           </div>
         </div>
-        <div>
-          <h3>¿No tienes cuenta?</h3>
-          <a href="/register">Regístrate como usuario</a>
-        </div>
-      </div>
+      </template>
+      <template is="dom-if" if="[[loggedIn]]">
+        <p>Estás logueado, no necesitas hacer login de nuevo</p>
+      </template>
     </div>
   </template>
 
   <script>
-    class MyLogin extends Polymer.Element {
+    class MyLogin extends NavigateMixin(Polymer.Element) {
       static get is() { return 'my-login'; }
 
       /**
@@ -61,7 +67,8 @@
             type: Boolean,
             value: false
           },
-          userService: Object
+          userService: Object,
+          loggedIn: Boolean
         };
       }
 
@@ -73,14 +80,19 @@
       }
 
       doLogin() {
-        console.log('comenzamos proceso de login', this.user);        
+        console.log('comenzamos proceso de login', this.user);
+        this.loading = true;
+        this.userService.login(this.user);      
       }
 
       loginResponse() {
         console.log('recibido login-response');
+        this.loading = false;    
+        this.navigateTo('/home/');
       }
       loginError() {
         console.log('recibido login-error');
+        this.loading = false;                
       }
     }
 

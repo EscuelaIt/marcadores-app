@@ -21,6 +21,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+
 
 <link rel="import" href="my-icons.html">
 <link rel="import" href="./interfaz/app-logo.html">
@@ -122,6 +124,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           display: none;
         }
       }
+
+      .blogout {
+        --paper-button: {
+          background-color: var(--app-primary-color);
+          color: #fff;
+          font-size: 0.8em;
+        }
+      }
       
       #toasterror {
         --paper-toast-background-color: #a33;
@@ -141,7 +151,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </app-route>
 
     <marcadores-service marcadores="{{marcadores}}" loading="{{marcadoresLoading}}"></marcadores-service>
-    <user-service id="userService"></user-service>
+    <user-service id="userService" logged-in="{{loggedIn}}"></user-service>
 
     <app-drawer-layout fullbleed narrow="{{narrow}}">
       <!-- Drawer content -->
@@ -156,10 +166,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <iron-icon icon="my-icons:home"></iron-icon>  
             <span>Home</span>
           </a>
-          <a name="nuevo" href="[[rootPath]]nuevo">
-            <iron-icon icon="my-icons:playlist-add"></iron-icon>  
-            <span>Nuevo marcador</span>
-          </a>
+          <template is="dom-if" if="[[loggedIn]]">
+            <a name="nuevo" href="[[rootPath]]nuevo">
+              <iron-icon icon="my-icons:playlist-add"></iron-icon>  
+              <span>Nuevo marcador</span>
+            </a>
+          </template>
           <a name="contacto" href="[[rootPath]]contacto">
             <iron-icon icon="my-icons:assignment"></iron-icon>  
             <span>Contacto</span>
@@ -180,9 +192,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <div main-title class="logocontainer">
               <app-logo id="logoheader"></app-logo>
             </div>
-            <a href="/login" id="loginlink">
+            <a href="/login" id="loginlink" hidden$="[[loggedIn]]">
               <paper-icon-button icon="my-icons:account-circle"></paper-icon-button>
             </a>
+            <paper-button hidden$="[[!loggedIn]]" class="blogout" on-click="doLogout">Logout</paper-button>
           </app-toolbar>
         </app-header>
 
@@ -195,7 +208,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <marcador-nuevo name="nuevo"></marcador-nuevo>
           <my-contacto name="contacto"></my-contacto>
           <my-legales name="legales"></my-legales>
-          <my-login name="login"></my-login>
+          <my-login name="login" logged-in="{{loggedIn}}"></my-login>
           <my-register name="register"></my-register>
           <my-view404 name="view404"></my-view404>
         </iron-pages>
@@ -223,6 +236,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           // This shouldn't be neccessary, but the Analyzer isn't picking up
           // Polymer.Element#rootPath
           rootPath: String,
+          loggedIn: Boolean
         };
       }
 
@@ -278,6 +292,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       toastError(e) {
         this.$.toasterror.show({text: e.detail, duration: 3000});
+      }
+
+      doLogout() {
+        this.$.userService.logout();
       }
     }
 

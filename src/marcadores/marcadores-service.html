@@ -33,6 +33,7 @@
     ></iron-ajax>
 
     <iron-meta id="elmetamarcadoresservice" key="marcadoresService"></iron-meta>
+    <iron-meta id="elmetauser"></iron-meta>
 
   </template>
 
@@ -64,8 +65,13 @@
       }
 
       insert(enlace) {
-        this.$.elajaxinsert.body = enlace;
-        this.$.elajaxinsert.generateRequest();
+        if(this.verifyUser('elajaxinsert')) {
+          this.$.elajaxinsert.body = enlace;
+          this.$.elajaxinsert.generateRequest();
+        } else {
+          this.dispatchEvent(new CustomEvent('insert-error'));
+          this.feedbackNegativo('Debes estar autenticado para insertar');
+        }
       }
 
       insertResponse() {
@@ -82,9 +88,15 @@
       }
 
       delete(id) {
-        this.idDelete = id;
-        console.log('marcadoresService voy a borrar', id);
-        this.$.elajaxdelete.generateRequest();
+        console.log('marcadoresService voy intentar borrar', id);        
+        if(this.verifyUser('elajaxdelete')) {
+          this.idDelete = id;
+          console.log('marcadoresService voy a borrar', id);
+          this.$.elajaxdelete.generateRequest();
+        } else {
+          this.feedbackNegativo('Debes estar logueado para borrar');
+          this.dispatchEvent(new CustomEvent('delete-error'));
+        }
       }
 
       deleteResponse() {
@@ -96,6 +108,31 @@
         this.feedbackNegativo('Error al borrar el enlace');
         this.dispatchEvent(new CustomEvent('delete-error'));
       }
+
+
+      getUserService() {
+        console.log('en get user service');
+        if(! this.userService) {
+          this.userService = this.$.elmetauser.byKey('userService');
+        }
+        return this.userService;
+      }
+
+      verifyUser(ajaxElement) {
+        let userService = this.getUserService();
+        if(userService.loggedIn) {
+          this.$[ajaxElement].headers = {
+            token: userService.token
+          }
+          return true;
+        }
+        this.$[ajaxElement].headers = {
+          token: ''
+        }
+        return false;
+      }
+
+
     }
 
     window.customElements.define(MarcadoresService.is, MarcadoresService);
