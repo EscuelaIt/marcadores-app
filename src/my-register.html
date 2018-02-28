@@ -1,0 +1,94 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
+
+<link rel="import" href="./user/login-form.html">
+<link rel="import" href="shared-styles.html">
+
+
+<dom-module id="my-register">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+    </style>
+    
+    <iron-meta id="meta"></iron-meta>
+
+    <div class="card">
+      <h1>Register</h1>
+      <div class="logincontainer">
+        <div class="loginform">
+          <login-form user="{{user}}"></login-form>
+          <div class="send">
+            <paper-button disabled="[[loading]]" on-click="doRegister">Registro</paper-button>
+            <paper-spinner active="[[loading]]"></paper-spinner>
+          </div>
+        </div>
+        <div>
+          <h3>¿Ya tienes cuenta?</h3>
+          <a href="/login">Entra con tu usuario</a>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <script>
+    class MyRegister extends Polymer.Element {
+      static get is() { return 'my-register'; }
+      /**
+        * Object describing property-related metadata used by Polymer features
+        */
+      static get properties() {
+        return {
+          user: {
+            type: Object,
+            value: function() {
+              return {
+                email: '@example.com',
+                password: ''
+              }
+            }
+          },
+          loading: {
+            type: Boolean,
+            value: false
+          }
+        };
+      }
+
+      ready() {
+        super.ready();
+        this.userService = this.$.meta.byKey('userService');
+        this.userService.addEventListener('sign-in-response', (e) => this.signInResponse(e));
+        this.userService.addEventListener('sign-in-error', (e) => this.signInError(e));
+      }
+      
+      doRegister() {
+        console.log('comenzamos proceso de registro', this.user);
+      }
+
+      signInResponse() {
+        console.log('recibido login-response');
+      }
+      signInError() {
+        console.log('recibido login-error');
+      }
+    }
+
+    window.customElements.define(MyRegister.is, MyRegister);
+  </script>
+</dom-module>

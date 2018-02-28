@@ -1,0 +1,49 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+
+<dom-module id="login-form">
+  <template>
+    <style>
+      :host {
+        display: block
+      }
+    </style>
+
+    <paper-input label="Email" value="{{user.email}}"></paper-input>
+    <paper-input type="password" label="Clave" value="{{user.password}}"></paper-input>
+
+  </template>
+
+  <script>
+    /**
+     * `login-form` Description
+     *
+     * @summary ShortDescription.
+     * @customElement
+     * @polymer
+     * @extends {Polymer.Element}
+     */
+    class LoginForm extends Polymer.Element {
+      /**
+       * String providing the tag name to register the element under.
+       */
+      static get is() {
+        return 'login-form';
+      }
+
+      /**
+       * Object describing property-related metadata used by Polymer features
+       */
+      static get properties() {
+        return {
+          user: {
+            type: Object,
+            notify: true
+          }
+        };
+      }
+    }
+
+    window.customElements.define(LoginForm.is, LoginForm);
+  </script>
+</dom-module>

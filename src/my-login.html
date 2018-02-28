@@ -1,0 +1,89 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="../bower_components/iron-meta/iron-meta.html">
+
+<link rel="import" href="./user/login-form.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="my-login">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+      
+    </style>
+
+    <iron-meta id="meta"></iron-meta>
+
+    <div class="card">
+      <h1>Login</h1>
+      <div class="logincontainer">
+        <div class="loginform">
+          
+          <login-form user="{{user}}"></login-form>
+          
+          <div class="send">
+            <paper-button disabled="[[loading]]" on-click="doLogin">Login</paper-button>
+            <paper-spinner active="[[loading]]"></paper-spinner>
+          </div>
+        </div>
+        <div>
+          <h3>¿No tienes cuenta?</h3>
+          <a href="/register">Regístrate como usuario</a>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <script>
+    class MyLogin extends Polymer.Element {
+      static get is() { return 'my-login'; }
+
+      /**
+        * Object describing property-related metadata used by Polymer features
+        */
+      static get properties() {
+        return {
+          user: {
+            type: Object,
+            value: function() {
+              return {
+                email: 'user@example.com',
+                password: '1234' 
+              }
+            }
+          },
+          loading: {
+            type: Boolean,
+            value: false
+          },
+          userService: Object
+        };
+      }
+
+      ready() {
+        super.ready();
+        this.userService = this.$.meta.byKey('userService');
+        this.userService.addEventListener('login-response', (e) => this.loginResponse(e));
+        this.userService.addEventListener('login-error', (e) => this.loginError(e));
+      }
+
+      doLogin() {
+        console.log('comenzamos proceso de login', this.user);        
+      }
+
+      loginResponse() {
+        console.log('recibido login-response');
+      }
+      loginError() {
+        console.log('recibido login-error');
+      }
+    }
+
+    window.customElements.define(MyLogin.is, MyLogin);
+  </script>
+</dom-module>
