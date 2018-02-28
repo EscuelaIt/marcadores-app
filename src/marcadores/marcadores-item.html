@@ -1,10 +1,9 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item-body.html">
 <link rel="import" href="../../bower_components/paper-item/paper-icon-item.html">
-<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
-
-
+<link rel="import" href="./marcadores-item-options.html">
+<link rel="import" href="../mixins/NavigateMixin.html">
 <dom-module id="marcadores-item">
   <template>
     <style>
@@ -26,13 +25,7 @@
       .deleting {
           background-color: #f99;
       }
-      paper-icon-button.cancelbutton {
-        color: #e66; 
-      }
       
-      paper-icon-button.editbutton {
-        color: rgb(84, 136, 145); 
-      }
     </style>
 
     <iron-meta id="elmeta"></iron-meta>
@@ -43,15 +36,17 @@
         <div>[[marcador.titulo]]</div>
         <div secondary>[[marcador.url]]</div>
       </paper-item-body>
-      <paper-icon-button icon="my-icons:delete" class="cancelbutton" on-click="deleteItem" id="cancelb"></paper-icon-button>
-      <paper-icon-button icon="my-icons:mode-edit" class="editbutton"></paper-icon-button>
+      <marcadores-item-options 
+        on-delete="deleteItem"
+        on-edit="editItem"
+      ></marcadores-item-options>
     </paper-icon-item>
 
   </template>
 
   <script>
 
-    class MarcadoresItem extends Polymer.Element {
+    class MarcadoresItem extends NavigateMixin(Polymer.Element) {
       static get is() {
         return 'marcadores-item';
       }
@@ -81,6 +76,10 @@
       deleteItem() {
         this.classItem = 'deleting';
         this.marcadoresService.delete(this.marcador.id);
+      }
+
+      editItem() {
+        this.navigateTo(`/editar/${this.marcador.id}/`);
       }
 
       marcadorChanged() {

@@ -1,0 +1,121 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+
+<dom-module id="more-options">
+  <template>
+    <style>
+      :host {
+        display: block;
+        position: relative;
+        box-sizing: border-box;
+      }
+      #iconmore {
+        color: var(--app-primary-color);
+      }
+
+      #overlay {
+        box-sizing: border-box;        
+        position: absolute;
+        top: 5px;
+        left: -200px;
+        display: none;
+        z-index: var(--more-options-zindex, 999999);
+        opacity: 0;
+        border: 1px solid #ddd;
+        background-color: #f5f5f5;
+        width: 200px;
+        padding: 1px;
+        transition: ease 0.5s;
+        transition-property: transform, opacity;
+        transform: translateY(-10px);
+        box-shadow: 0 3px 20px rgba(102, 102, 102, 0.3), 0 1px 2px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(89, 89, 89, .1);
+        @apply --dile-user-config-box-overlay;
+      }
+      #overlay.opened {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    </style>
+
+    <iron-icon id="iconmore" icon="my-icons:more-vert" on-click="toggle"></iron-icon>
+    <div id="overlay" class$="[[_overlayClass]]">
+      <slot name="overlay-content"></slot>
+    </div>
+  </template>
+
+  <script>
+    /**
+     * `more-options` Description
+     *
+     * @summary ShortDescription.
+     * @customElement
+     * @polymer
+     * @extends {Polymer.Element}
+     */
+    class MoreOptions extends Polymer.Element {
+      /**
+       * String providing the tag name to register the element under.
+       */
+      static get is() {
+        return 'more-options';
+      }
+
+      /**
+       * Object describing property-related metadata used by Polymer features
+       */
+      static get properties() {
+        return {
+          _overlayClass: {
+            type: String,
+            value: ''
+          },
+        };
+      }
+
+
+      ready() {
+        super.ready();
+      }
+
+      constructor() {
+        super();
+        this.onDocumentClick = this.close.bind(this);
+      }
+
+      disconnectedCallback() {
+        super.connectedCallback();
+        document.removeEventListener('click', this.onDocumentClick);
+      }
+
+      toggle() {
+        if(this._overlayClass == 'opened') {
+          // this.close();
+        } else {
+          this.open();
+        }
+      }
+      /**
+      * closes the overlay
+      */
+      close() {
+        this._overlayClass = '';
+        document.removeEventListener('click', this.onDocumentClick);        
+        setTimeout(() => this.$.overlay.style.display = 'none', 500);
+      }
+      /**
+      * opens the overlay
+      */
+      open() {
+        this.$.overlay.style.display = 'block';
+        setTimeout(() => {
+          this._overlayClass = 'opened';
+          document.addEventListener('click', this.onDocumentClick);
+        }, 50);
+      }
+
+
+    }
+
+    window.customElements.define(MoreOptions.is, MoreOptions);
+  </script>
+</dom-module>

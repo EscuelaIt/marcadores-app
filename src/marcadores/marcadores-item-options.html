@@ -1,0 +1,68 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../utils/more-options.html">
+
+<dom-module id="marcadores-item-options">
+  <template>
+    <style>
+      :host {
+        display: inline-block;
+      }
+      paper-icon-button.cancelbutton {
+        color: #e66; 
+      }
+      
+      paper-icon-button.editbutton {
+        color: rgb(84, 136, 145); 
+      }
+    </style>
+
+    <more-options>
+      <div slot="overlay-content">
+        <div class="accion" on-click="edit">
+          <paper-icon-button icon="my-icons:mode-edit" class="editbutton"></paper-icon-button>
+          <span>Editar</span>
+        </div>
+        <div class="accion" on-click="share">
+          <paper-icon-button icon="my-icons:share" class="editbutton"></paper-icon-button>
+          <span>Compartir</span>
+        </div>
+        <div class="accion" on-click="delete">
+          <paper-icon-button icon="my-icons:delete" class="cancelbutton" id="cancelb"></paper-icon-button>
+          <span>Eliminar</span>
+        </div>
+      </div>
+    </more-options>
+  </template>
+
+  <script>
+
+    class MarcadoresItemOptions extends Polymer.Element {
+      static get is() {
+        return 'marcadores-item-options';
+      }
+
+      static get properties() {
+        return {
+          marcador: Object,
+        };
+      }
+
+      ready() {
+        super.ready();
+      }
+
+      delete() {
+        this.dispatchEvent(new CustomEvent('delete'));
+      }
+      edit() {
+        this.dispatchEvent(new CustomEvent('edit'));
+      }
+      share() {
+        this.dispatchEvent(new CustomEvent('share'));        
+      }
+    }
+
+    window.customElements.define(MarcadoresItemOptions.is, MarcadoresItemOptions);
+  </script>
+</dom-module>
