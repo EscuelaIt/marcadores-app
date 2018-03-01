@@ -1,0 +1,69 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-input/paper-textarea.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner.html">
+
+
+<dom-module id="marcadores-formulario">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block
+      }
+    </style>
+
+    <paper-input label="Url" value="{{enlace.url}}"></paper-input>
+    <paper-input label="Título" value="{{enlace.titulo}}"></paper-input>
+    <paper-textarea label="Descripción" value="{{enlace.descripcion}}"></paper-textarea>
+  </template>
+
+  <script>
+    /**
+     * `marcadores-formulario` Description
+     *
+     * @summary ShortDescription.
+     * @customElement
+     * @polymer
+     * @extends {Polymer.Element}
+     */
+    class MarcadoresFormulario extends Polymer.Element {
+      /**
+       * String providing the tag name to register the element under.
+       */
+      static get is() {
+        return 'marcadores-formulario';
+      }
+
+      /**
+       * Object describing property-related metadata used by Polymer features
+       */
+      static get properties() {
+        return {
+          enlace: {
+            type: Object,
+            notify: true,
+            value: function() {
+              return this.nuevoObjetoEnlace();
+            }
+          },
+        };
+      }
+
+      resetForm() {
+        this.enlace = this.nuevoObjetoEnlace();
+      }
+      
+      nuevoObjetoEnlace() {
+        return {
+          url: 'http://',
+          titulo: '',
+          descripcion: ''
+        };
+      }
+
+    }
+
+    window.customElements.define(MarcadoresFormulario.is, MarcadoresFormulario);
+  </script>
+</dom-module>

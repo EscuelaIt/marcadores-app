@@ -1,0 +1,128 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/app-route/app-route.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner.html">
+
+<link rel="import" href="../shared-styles.html">
+<link rel="import" href="../mixins/navigate-mixin.html">
+<link rel="import" href="./marcadores-formulario.html">
+
+
+<dom-module id="marcadores-editar">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+      
+    </style>
+
+    <iron-meta id="meta"></iron-meta>
+    
+    <app-route
+      route="{{route}}"
+      pattern="/:id"
+      data="{{routeData}}"
+    ></app-route>
+
+    <div class="card">
+      <div class="back">
+        <a href="/"><paper-icon-button icon="my-icons:arrow-back"></paper-icon-button></a>
+      </div>
+      <h1>Editar [[marcador.titulo]]</h1>
+      <marcadores-formulario id="formul" enlace="{{marcador}}"></marcadores-formulario>
+      <div class="send">
+          <paper-button on-click="editar" disabled="[[loading]]" class="baccion">Editar</paper-button>
+          <paper-spinner active="[[loading]]"></paper-spinner>
+        </div>
+    </div>
+  </template>
+
+  <script>
+    class MarcadoresEditar extends NavigateMixin(Polymer.Element) {
+      static get is() { return 'marcadores-editar'; }
+
+      static get properties() {
+        return {
+          route: Object,
+          routeData: Object,
+          marcador: Object,
+          loading: {
+            type: Boolean,
+            value: false
+          },
+          inicializado: {
+            type: Boolean,
+            value: false
+          },
+        };
+      }
+
+      /**
+        * Array of strings describing multi-property observer methods and their
+        * dependant properties
+        */
+      static get observers() {
+        return [
+          'routeChanged(routeData.id, inicializado)'
+        ];
+      }
+      
+      ready() {
+        super.ready();
+        this.marcadoresService = this.$.meta.byKey('marcadoresService');
+        this.marcadoresService.addEventListener('put-response', (e) => this.putResponse(e));
+        this.marcadoresService.addEventListener('put-error', (e) => this.putError(e));
+        this.marcadoresService.addEventListener('get-response', e => this.actualizarMarcador(e));
+        this.marcadoresService.addEventListener('get-error', e => this.errorRecepcionMarcador(e));
+        this.inicializado = true;
+      }
+
+      routeChanged(id, inicializado) {
+        console.log('routeChanged', id, inicializado)
+        if(inicializado) {
+          this.marcador = null;
+          this.loading = true;
+          this.marcadoresService.get(id);
+        }
+      }
+
+      actualizarMarcador(e) {
+        this.marcador = e.detail;
+        this.loading = false;
+      }
+      errorRecepcionMarcador() {
+        this.loading = false;
+        this.navigateTo('/home/');       
+      }
+
+      editar() {
+        this.loading = true;
+        this.marcadoresService.put(this.marcador);
+      }
+
+      putResponse() {
+        this.loading = false;
+      }
+
+      putError() {
+        //setTimeout(() => { this.set('loading',false) }, 50);
+        this.loading = false;
+      }
+    }
+
+    window.customElements.define(MarcadoresEditar.is, MarcadoresEditar);
+  </script>
+</dom-module>

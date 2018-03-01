@@ -69,7 +69,6 @@
         super.ready();
         this.marcadoresService = this.$.elmeta.byKey('marcadoresService');
         this.marcadoresService.addEventListener('delete-error', (e) => this.deleteError(e));
-
       }
 
 
@@ -80,6 +79,7 @@
 
       editItem() {
         this.navigateTo(`/editar/${this.marcador.id}/`);
+        //this.navigateTo('/editar/' + this.marcador.id + '/');
       }
 
       marcadorChanged() {

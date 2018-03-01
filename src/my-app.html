@@ -31,6 +31,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="lazy-import" href="my-home.html">
 <link rel="lazy-import" href="marcadores/marcador-nuevo.html">
+<link rel="lazy-import" href="marcadores/marcadores-editar.html">
 <link rel="lazy-import" href="my-contacto.html">
 <link rel="lazy-import" href="my-legales.html">
 <link rel="lazy-import" href="my-login.html">
@@ -206,6 +207,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             role="main">
           <my-home name="home" marcadores="[[marcadores]]" loading="{{marcadoresLoading}}"></my-home>
           <marcador-nuevo name="nuevo"></marcador-nuevo>
+          <marcadores-editar name="editar" route="[[subroute]]"></marcadores-editar>
           <my-contacto name="contacto"></my-contacto>
           <my-legales name="legales"></my-legales>
           <my-login name="login" logged-in="{{loggedIn}}"></my-login>
@@ -270,10 +272,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _pageChanged(page) {
         // Load page import on demand. Show 404 page if fails
         var resolvedPageUrl;
-        if(page == 'nuevo') {
-          resolvedPageUrl = this.resolveUrl('marcadores/marcador-nuevo.html');
-        } else {
-          resolvedPageUrl = this.resolveUrl('my-' + page + '.html');
+        switch(page) {
+          case 'nuevo':
+            resolvedPageUrl = this.resolveUrl('marcadores/marcador-nuevo.html');
+            break;
+          case 'editar':
+            resolvedPageUrl = this.resolveUrl('marcadores/marcadores-editar.html');
+            break;
+          default:
+            resolvedPageUrl = this.resolveUrl('my-' + page + '.html');
         }
         Polymer.importHref(
             resolvedPageUrl,
