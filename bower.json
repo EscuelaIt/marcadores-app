@@ -22,7 +22,9 @@
     "paper-spinner": "PolymerElements/paper-spinner#^2.1.0",
     "iron-meta": "PolymerElements/iron-meta#^2.1.0",
     "paper-item": "PolymerElements/paper-item#^2.1.0",
-    "app-storage": "PolymerElements/app-storage#^2.1.0"
+    "app-storage": "PolymerElements/app-storage#^2.1.0",
+    "paper-card": "PolymerElements/paper-card#^2.1.0",
+    "polymerfire": "firebase/polymerfire#^2.2.1"
   },
   "resolutions": {
     "polymer": "^2.0.0"

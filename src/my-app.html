@@ -23,11 +23,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-toast/paper-toast.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 
+<link rel="import" href="../bower_components/polymerfire/polymerfire.html">
 
 <link rel="import" href="my-icons.html">
 <link rel="import" href="./interfaz/app-logo.html">
 <link rel="import" href="./marcadores/marcadores-service.html">
 <link rel="import" href="./user/user-service.html">
+<link rel="import" href="./share/share-service.html">
 
 <link rel="lazy-import" href="my-home.html">
 <link rel="lazy-import" href="marcadores/marcador-nuevo.html">
@@ -151,6 +153,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         tail="{{subroute}}">
     </app-route>
 
+    <!-- FIREBASE -->
+    <firebase-app
+      auth-domain="nuevo-firebase.firebaseapp.com"
+      database-url="https://nuevo-firebase.firebaseio.com"
+      api-key="AIzaSyAK6ZTPi-aPUoJhTggEtTW2csVzU9I371Y"
+      storage-bucket="nuevo-firebase.appspot.com"
+    ></firebase-app>
+
+    <firebase-auth id="auth" user="{{user}}" provider="google" on-error="handleError">
+    </firebase-auth>
+
+    <share-service id="shareService" marcadores-compartidos="{{marcadoresCompartidos}}"></share-service>
+
     <marcadores-service marcadores="{{marcadores}}" loading="{{marcadoresLoading}}"></marcadores-service>
     <user-service id="userService" logged-in="{{loggedIn}}"></user-service>
 
@@ -197,6 +212,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <paper-icon-button icon="my-icons:account-circle"></paper-icon-button>
             </a>
             <paper-button hidden$="[[!loggedIn]]" class="blogout" on-click="doLogout">Logout</paper-button>
+            <paper-button on-click="autentica">login firebase</paper-button>
           </app-toolbar>
         </app-header>
 
@@ -205,7 +221,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             attr-for-selected="name"
             fallback-selection="view404"
             role="main">
-          <my-home name="home" marcadores="[[marcadores]]" loading="{{marcadoresLoading}}"></my-home>
+          <my-home 
+            name="home" 
+            marcadores="[[marcadores]]" 
+            loading="{{marcadoresLoading}}"
+            marcadores-compartidos="{{marcadoresCompartidos}}"
+            on-share-delete="shareDelete"
+          ></my-home>
           <marcador-nuevo name="nuevo"></marcador-nuevo>
           <marcadores-editar name="editar" route="[[subroute]]"></marcadores-editar>
           <my-contacto name="contacto"></my-contacto>
@@ -238,7 +260,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           // This shouldn't be neccessary, but the Analyzer isn't picking up
           // Polymer.Element#rootPath
           rootPath: String,
-          loggedIn: Boolean
+          loggedIn: Boolean,
+          fbApp: Object
         };
       }
 
@@ -246,6 +269,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         return [
           '_routePageChanged(routeData.page)',
         ];
+      }
+      
+      autentica() {
+        this.$.auth.signInWithPopup()
+          .then(function(response) { })
+          .catch(function(error) { });
+      }
+
+      shareDelete(e) {
+        //console.log(e.detail);
+        this.$.shareService.delete(e.detail);
       }
 
       ready() {
@@ -255,7 +289,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         });
         this.addEventListener('toast-error', (e) => this.toastError(e) );
         this.addEventListener('toast-message', (e) => this.toastMessage(e) );
-
+        
       }
       
       _routePageChanged(page) {
@@ -268,6 +302,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this.$.drawer.close();
         }
       }
+
 
       _pageChanged(page) {
         // Load page import on demand. Show 404 page if fails

@@ -1,0 +1,51 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-meta/iron-meta.html">
+<link rel="import" href="../../bower_components/polymerfire/firebase-query.html">
+
+<dom-module id="share-service">
+  <template>
+
+    <iron-meta key="shareService" id="elmeta"></iron-meta>
+
+    <firebase-query
+      path="/marcadoresCompartidos"
+      data="{{marcadoresCompartidos}}"
+      app="{{fbApp}}"
+    ></firebase-query>
+
+  </template>
+
+  <script>
+
+    class ShareService extends Polymer.Element {
+      static get is() {
+        return 'share-service';
+      }
+
+      static get properties() {
+        return {
+          marcadoresCompartidos: {
+            type: Array,
+            notify: true
+          },
+          fbApp: Object
+        };
+      }
+
+      ready() {
+        super.ready();
+        this.$.elmeta.value = this;
+      }
+
+      share(marcador) {
+        this.fbApp.database().ref('/marcadoresCompartidos').push(marcador);
+      }
+
+      delete(marcador) {
+        this.fbApp.database().ref('/marcadoresCompartidos/').child(marcador.$key).remove();
+      }
+    }
+
+    window.customElements.define(ShareService.is, ShareService);
+  </script>
+</dom-module>

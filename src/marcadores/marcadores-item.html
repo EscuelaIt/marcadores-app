@@ -39,6 +39,7 @@
       <marcadores-item-options 
         on-delete="deleteItem"
         on-edit="editItem"
+        on-share="shareItem"
       ></marcadores-item-options>
     </paper-icon-item>
 
@@ -69,6 +70,8 @@
         super.ready();
         this.marcadoresService = this.$.elmeta.byKey('marcadoresService');
         this.marcadoresService.addEventListener('delete-error', (e) => this.deleteError(e));
+        
+        this.shareService = this.$.elmeta.byKey('shareService');
       }
 
 
@@ -88,6 +91,11 @@
 
       deleteError(e) {
         this.set('classItem', '');
+      }
+
+      shareItem() {
+        //this.fbApp.database().ref('marcadoresCompartidos').push(this.marcador);
+        this.shareService.share(this.marcador);
       }
     }
 

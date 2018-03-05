@@ -1,0 +1,98 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+
+<dom-module id="shared-item">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      paper-card {
+        width: 100%;
+        margin-bottom: 20px;        
+      }
+      span {
+        display: inline-block;
+        margin-left: 10px;
+      }
+      iron-icon {
+        color: var(--app-primary-color);
+      }
+      h3 {
+        font-size: 1em;
+      }
+    </style>
+  
+  <paper-card>
+    <div class="card-content">
+      <h3>[[marcador.titulo]]</h3>
+      <a href$="[[marcador.url]]">[[marcador.url]]</a>
+      <p>[[lastShared]]</p>
+    </div>
+    <div class="card-actions">
+      <paper-button on-click="deleteShared">
+        <iron-icon icon="my-icons:cancel"></iron-icon>
+        <span>Eliminar</span>
+      </paper-button>
+    </div>
+  </paper-card>
+
+
+  </template>
+
+  <script>
+    /**
+     * `shared-item` Description
+     *
+     * @summary ShortDescription.
+     * @customElement
+     * @polymer
+     * @extends {Polymer.Element}
+     */
+    class SharedItem extends Polymer.Element {
+
+      static get is() {
+        return 'shared-item';
+      }
+
+      static get properties() {
+        return {
+          marcador: Object,
+          lastShared: {
+            type: String,
+            value: '',
+            computed: 'calculaDesde(marcador.lastShared)'
+          }
+        };
+      }
+
+      constructor() {
+        super();
+      }
+
+      ready() {
+        super.ready();
+      }
+
+      deleteShared() {
+        this.dispatchEvent(new CustomEvent('share-delete', {
+          detail: this.marcador,
+          composed: true,
+          bubbles: true
+        },
+        ));
+      }
+
+      calculaDesde(lastShared) {
+        if(lastShared) {
+          return moment(lastShared).fromNow();
+        }
+        return 'Sin compartir...';
+      }
+    }
+
+    window.customElements.define(SharedItem.is, SharedItem);
+  </script>
+</dom-module>
