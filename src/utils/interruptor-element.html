@@ -4,72 +4,60 @@
   <template>
     <style>
       :host {
-        display: inline-block;
-        user-select: none;
-        cursor: pointer;
+        display: block
       }
       div {
         display: inline-block;
         padding: 10px;
         border-radius: 5px;
+        @apply --interruptor-element-box;
       }
       .activo {
-        background-color: orangered;
-        color: white;
+        background-color: var(--app-primary-color, orangered);
+        color: #fff;
       }
       .inactivo {
-        background-color: #ddd;
+        background-color: var(--interruptor-element-color-inactivo, #ddd);
       }
     </style>
-    
-    <div class$="[[activoClass]]">
-      <slot></slot>
+
+    <div class$="[[interruptorClass]]" on-click="cambia">
+      <slot name="interruptor-content"></slot>
     </div>
 
   </template>
 
   <script>
+
     class InterruptorElement extends Polymer.Element {
-      /**
-       * String providing the tag name to register the element under.
-       */
+
       static get is() {
         return 'interruptor-element';
       }
 
-      /**
-       * Object describing property-related metadata used by Polymer features
-       */
       static get properties() {
         return {
           activo: {
             type: Boolean,
-            value: false
+            value: false,
+            notify: true
           },
-          disabled: {
-            type: Boolean,
-            value: false
-          },
-          activoClass: {
+          interruptorClass: {
             type: String,
-            computed: 'cambiarClass(activo, disabled)'
+            computed: 'calculaClass(activo)'
           }
         };
       }
 
-      ready() {
-        super.ready();
-        this.addEventListener('click', () => this.activo = !this.activo );
-      }
-
-      cambiarClass(activo, disabled) {
-        if(disabled) {
-          return 'inactivo';
-        }
+      calculaClass(activo) {
         if(activo) {
           return 'activo';
         }
         return 'inactivo';
+      }
+
+      cambia() {
+        this.activo = !this.activo;
       }
 
     }

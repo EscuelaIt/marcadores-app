@@ -22,6 +22,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-toast/paper-toast.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/dile-user-config-box/dile-user-config-box.html">
 
 <link rel="import" href="../bower_components/polymerfire/polymerfire.html">
 
@@ -30,6 +31,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="./marcadores/marcadores-service.html">
 <link rel="import" href="./user/user-service.html">
 <link rel="import" href="./share/share-service.html">
+<link rel="import" href="./notification/notification-manager.html">
+
 
 <link rel="lazy-import" href="my-home.html">
 <link rel="lazy-import" href="marcadores/marcador-nuevo.html">
@@ -139,6 +142,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       #toasterror {
         --paper-toast-background-color: #a33;
       }
+
+      dile-user-config-box {
+        --dile-user-config-box-icon-color: var(--default-primary-color);
+        font-size: 1em;
+        --dile-user-config-box-overlay: {
+          padding: 10px;
+          color: #666;
+          width: 250px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          text-align: center;
+        }
+      }
     </style>
 
     <app-location
@@ -211,8 +228,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <a href="/login" id="loginlink" hidden$="[[loggedIn]]">
               <paper-icon-button icon="my-icons:account-circle"></paper-icon-button>
             </a>
-            <paper-button hidden$="[[!loggedIn]]" class="blogout" on-click="doLogout">Logout</paper-button>
-            <paper-button on-click="autentica">login firebase</paper-button>
+            <div hidden="[[!loggedIn]]">
+              <dile-user-config-box>
+                <span slot="overlay-content">
+                  <paper-button class="blogout" on-click="doLogout">Logout</paper-button>
+                  <notification-manager></notification-manager>
+                </span>
+              </dile-user-config-box>
+            </div>
+            <!-- <paper-button on-click="autentica">login firebase</paper-button> -->
           </app-toolbar>
         </app-header>
 

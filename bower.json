@@ -24,7 +24,8 @@
     "paper-item": "PolymerElements/paper-item#^2.1.0",
     "app-storage": "PolymerElements/app-storage#^2.1.0",
     "paper-card": "PolymerElements/paper-card#^2.1.0",
-    "polymerfire": "firebase/polymerfire#^2.2.1"
+    "polymerfire": "firebase/polymerfire#^2.2.1",
+    "dile-user-config-box": "Polydile/dile-user-config-box#^0.0.6"
   },
   "resolutions": {
     "polymer": "^2.0.0"
