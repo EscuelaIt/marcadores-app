@@ -1,7 +1,7 @@
 {
-  "name": "My App",
-  "short_name": "My App",
-  "description": "My App description",
+  "name": "MarcadoresApp",
+  "short_name": "Marcadores App",
+  "description": "Guardar y compartir marcadores via push notifications",
   "icons": [
     {
       "src": "images/manifest/icon-192x192.png",
@@ -17,5 +17,6 @@
   "start_url": "/",
   "display": "standalone",
   "theme_color": "#3f51b5",
-  "background_color": "#3f51b5"
+  "background_color": "#3f51b5",
+  "gcm_sender_id": "103953800507"
 }

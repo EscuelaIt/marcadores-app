@@ -10,6 +10,7 @@
     
     <iron-meta key="userService" id="elmeta"></iron-meta>
     <app-localstorage-document id="eltokenstorage" key="token" data="{{token}}"></app-localstorage-document>
+    <app-localstorage-document id="eluserstorage" key="user" data="{{emailUser}}"></app-localstorage-document>
 
     <iron-ajax
       id="elajaxregister"
@@ -38,6 +39,7 @@
       method="get"
       on-response="verifyResponse"
       on-error="verifyError"
+      last-response="{{verifyObject}}"
     ></iron-ajax>
 
   </template>
@@ -68,7 +70,12 @@
           loginProcessStarted: {
             type: Boolean,
             value: false
-          }
+          },
+          emailUser: {
+            type: String,
+            value: ''
+          },
+          verifyObject: Object
         };
       }
 
@@ -98,6 +105,7 @@
       login(user) {
         console.log('user-service login');        
         this.$.elajaxlogin.body = user;
+        this.emailUser = user.email;
         this.$.elajaxlogin.generateRequest();
         this.loginProcessStarted = true;
       }
@@ -125,6 +133,7 @@
         this.feedbackPositivo('Cerrando sesión');        
         this.loggedIn = false;
         this.token = '';
+        this.emailUser = '';
       }
       
       tokenChanged(token) {
@@ -138,10 +147,18 @@
       verifyError() {
         this.loggedIn = false;
         this.token = '';
+        this.emailUser = '';        
       }
       verifyResponse() {
         console.log('token verificado');
         this.loggedIn = true;
+        console.log(this.verifyObject);
+        this.emailUser = this.verifyObject.email;
+        this.dispatchEvent(new CustomEvent('login-response'));
+      }
+
+      getEmailFirebaseKey() {
+        return this.emailUser.split('.').join('+dot+');
       }
     }
 
