@@ -65,7 +65,7 @@
         this.marcadoresService = this.$.elmeta.byKey('marcadoresService');
         this.marcadoresService.addEventListener('insert-response', (e) => this.insertResponse(e));
         this.marcadoresService.addEventListener('insert-error', (e) => this.insertError(e));
-        console.log('-->', this.marcadoresService);
+        //////console.log('-->', this.marcadoresService);
       }
 
       returnNewEnlace() {
@@ -78,14 +78,14 @@
 
       anadir() {
         this.loading = true;
-        console.log('vamos a añadir el marcador a la base de datos', this.enlace);
+        //////console.log('vamos a añadir el marcador a la base de datos', this.enlace);
         this.marcadoresService.insert( this.enlace );
       }
 
       insertResponse(e) {
         this.loading = false;
         let enlace = this.returnNewEnlace();
-        console.log('enlace', enlace);
+        //////console.log('enlace', enlace);
         this.set('enlace', enlace);
       }
 

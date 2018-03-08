@@ -80,18 +80,18 @@
       }
 
       doLogin() {
-        console.log('comenzamos proceso de login', this.user);
+        //console.log('comenzamos proceso de login', this.user);
         this.loading = true;
         this.userService.login(this.user);      
       }
 
       loginResponse() {
-        console.log('recibido login-response');
+        //console.log('recibido login-response');
         this.loading = false;    
         this.navigateTo('/home/');
       }
       loginError() {
-        console.log('recibido login-error');
+        //console.log('recibido login-error');
         this.loading = false;                
       }
     }

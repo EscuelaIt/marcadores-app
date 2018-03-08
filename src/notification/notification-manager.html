@@ -51,12 +51,12 @@
       ready() {
         super.ready();
         this.userService = this.$.meta.byKey('userService');
-        console.log(this.userService);
+        //console.log(this.userService);
         this.userService.addEventListener('login-response', (e) => this.loginResponse(e));
       }
 
       loginResponse() {
-        console.log('loginresponse ehecutado')
+        //console.log('loginresponse ehecutado')
         this.tokenChanged(this.token);
       }
 
@@ -68,10 +68,10 @@
 
       tokenChanged(token) {
         if(token) {
-          console.log(token, this.userService.loggedIn)
+          //console.log(token, this.userService.loggedIn)
         }
         if(token && this.userService.loggedIn) {
-          console.log('almaceno el token', token);
+          //console.log('almaceno el token', token);
           let ref = `/userNotificationToken/${this.userService.getEmailFirebaseKey()}`;
           this.$.notificationDocument.app.database().ref(ref).set(token);
         }

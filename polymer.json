@@ -2,9 +2,13 @@
   "entrypoint": "index.html",
   "shell": "src/my-app.html",
   "fragments": [
-    "src/my-view1.html",
-    "src/my-view2.html",
-    "src/my-view3.html",
+    "src/my-contacto.html",
+    "src/marcadores/marcador-nuevo.html",
+    "src/marcadores/marcadores-editar.html",
+    "src/my-home.html",
+    "src/my-login.html",
+    "src/my-register.html",
+    "src/my-legales.html",
     "src/my-view404.html"
   ],
   "sources": [
@@ -13,7 +17,8 @@
   ],
   "extraDependencies": [
     "manifest.json",
-    "bower_components/webcomponentsjs/*.js"
+    "bower_components/webcomponentsjs/*.js",
+    "firebase-messaging-sw.js"
   ],
   "lint": {
     "rules": ["polymer-2"]

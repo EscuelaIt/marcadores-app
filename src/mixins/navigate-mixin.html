@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <script>
-  NavigateMixin = Polymer.dedupingMixin (function(superclass) {
+  /* @polymerMixin */
+  NavigateMixin = Polymer.dedupingMixin ((superclass) => {
     return class extends superclass {
       navigateTo(ruta) {
         this.dispatchEvent(new CustomEvent('navegar', {

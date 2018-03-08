@@ -95,22 +95,22 @@
         }
       }
       insertResponse() {
-        console.log('insertResponse');
+        //console.log('insertResponse');
         this.dispatchEvent(new CustomEvent('insert-response'));
         this.feedbackPositivo('Marcador insertado');
         this.$.elajax.generateRequest();
       }
       insertError() {
-        console.log('insertError');
+        //console.log('insertError');
         this.dispatchEvent(new CustomEvent('insert-error'));
         this.feedbackNegativo('Marcador NO insertado');
       }
 
       delete(id) {
-        console.log('marcadoresService voy intentar borrar', id);        
+        //console.log('marcadoresService voy intentar borrar', id);        
         if(this.verifyUser('elajaxdelete')) {
           this.idDelete = id;
-          console.log('marcadoresService voy a borrar', id);
+          //console.log('marcadoresService voy a borrar', id);
           this.$.elajaxdelete.generateRequest();
         } else {
           this.feedbackNegativo('Debes estar logueado para borrar');
@@ -129,12 +129,12 @@
 
       get(id) {
         this.idGet = id;
-        console.log('marcadoresService voy a recuperar', id);
+        //console.log('marcadoresService voy a recuperar', id);
         this.$.elajaxget.generateRequest();
       }
       getResponse(e) {
         let response = this.getObject;
-        console.log('marcadores sevice getresponse', response)
+        //console.log('marcadores sevice getresponse', response)
         this.dispatchEvent(new CustomEvent('get-response', {
           detail: response
         }));
@@ -147,7 +147,7 @@
       put(enlace) {
         if(this.verifyUser('elajaxput')) {
           this.idPut = enlace.id;
-          console.log('marcadoresService voy a editar', enlace.id);
+          //console.log('marcadoresService voy a editar', enlace.id);
           this.$.elajaxput.body = enlace;
           this.$.elajaxput.generateRequest();
         } else {
@@ -167,7 +167,7 @@
 
 
       getUserService() {
-        console.log('en get user service');
+        //console.log('en get user service');
         if(! this.userService) {
           this.userService = this.$.elmetauser.byKey('userService');
         }

@@ -79,18 +79,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
       
       doRegister() {
-        console.log('comenzamos proceso de registro', this.user);
+        //console.log('comenzamos proceso de registro', this.user);
         this.loading = true;
         this.userService.signIn(this.user);
       }
 
       signInResponse() {
-        console.log('recibido login-response');
+        //console.log('recibido login-response');
         this.loading = false;
         this.navigateTo('/login/');
       }
       signInError() {
-        console.log('recibido login-error');
+        //console.log('recibido login-error');
         this.loading = false;                
       }
     }
