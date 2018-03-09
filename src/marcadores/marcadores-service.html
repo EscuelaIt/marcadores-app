@@ -8,7 +8,7 @@
   <template>
     <iron-ajax
       id="elajax"
-      url="http://localhost:3333/marcadores"
+      url="https://fake.desarrolloweb.es/marcadores"
       method="get"
       loading="{{loading}}"
       last-response="{{marcadores}}"
@@ -17,7 +17,7 @@
 
     <iron-ajax
       id="elajaxinsert"
-      url="http://localhost:3333/marcadores"
+      url="https://fake.desarrolloweb.es/marcadores"
       method="post"
       content-type="application/json"
       on-response="insertResponse"
@@ -26,7 +26,7 @@
 
     <iron-ajax
       id="elajaxdelete"
-      url="http://localhost:3333/marcadores/[[idDelete]]"      
+      url="https://fake.desarrolloweb.es/marcadores/[[idDelete]]"      
       method="delete"
       on-response="deleteResponse"
       on-error="deleteError"
@@ -34,7 +34,7 @@
 
     <iron-ajax
       id="elajaxget"
-      url="http://localhost:3333/marcadores/[[idGet]]"
+      url="https://fake.desarrolloweb.es/marcadores/[[idGet]]"
       method="get"
       on-response="getResponse"
       on-error="getError"
@@ -43,7 +43,7 @@
 
     <iron-ajax
       id="elajaxput"
-      url="http://localhost:3333/marcadores/[[idPut]]"      
+      url="https://fake.desarrolloweb.es/marcadores/[[idPut]]"      
       content-type="application/json"
       method="put"
       on-response="putResponse"

@@ -14,6 +14,7 @@ module.exports = {
   staticFileGlobs: [
     'bower_components/webcomponentsjs/webcomponents-loader.js',
     'images/*',
+    'images/manifest/*',
     'manifest.json',
   ],
   runtimeCaching: [
@@ -26,5 +27,16 @@ module.exports = {
         },
       },
     },
+    {
+      urlPattern: /fake\.desarrolloweb\.es\/marcadores/,
+      handler: 'networkFirst',
+      options: {
+        cache: {
+          maxEntries: 200,
+          name: 'marcadores-data',
+        },
+      },
+    },
   ],
+  navigateFallbackWhitelist: [/^(?!\/__).*/],
 };

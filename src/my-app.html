@@ -23,7 +23,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-toast/paper-toast.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/dile-user-config-box/dile-user-config-box.html">
-
+<link rel="import" href="../bower_components/polymer/lib/utils/render-status.html">
 <link rel="import" href="../bower_components/polymerfire/polymerfire.html">
 
 <link rel="import" href="my-icons.html">
@@ -32,6 +32,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="./user/user-service.html">
 <link rel="import" href="./share/share-service.html">
 <link rel="import" href="./notification/notification-manager.html">
+<link rel="import" href="./utils/offline-icon.html">
 
 
 <link rel="lazy-import" href="my-home.html">
@@ -225,9 +226,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <div main-title class="logocontainer">
               <app-logo id="logoheader"></app-logo>
             </div>
-            <a href="/login" id="loginlink" hidden$="[[loggedIn]]">
-              <paper-icon-button icon="my-icons:account-circle"></paper-icon-button>
-            </a>
+            <template is="dom-if" if="{{online}}">
+              <a href="/login" id="loginlink" hidden$="[[loggedIn]]">
+                <paper-icon-button icon="my-icons:account-circle"></paper-icon-button>
+              </a>
+            </template>
+            <offline-icon online="{{online}}"></offline-icon>
             <div hidden="[[!loggedIn]]">
               <dile-user-config-box>
                 <span slot="overlay-content">
@@ -236,7 +240,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 </span>
               </dile-user-config-box>
             </div>
-            <!-- <paper-button on-click="autentica">login firebase</paper-button> -->
+            <paper-button on-click="autentica">login firebase</paper-button>
           </app-toolbar>
         </app-header>
 
@@ -266,6 +270,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <paper-toast id="toast"></paper-toast>
     <paper-toast id="toasterror"></paper-toast>
+    
+    <paper-toast
+        id="toastWebsiteOffline"
+        text="El sitio está disponible para uso offline">
+    </paper-toast>
+    <paper-toast
+        id="toastWebsiteUpdated"
+        class="toast-website-updated"
+        duration="0"
+        text="New version available!">
+        <paper-button on-click="_reloadWebsite">Update</paper-button>
+    </paper-toast>
+
   </template>
 
   <script>
@@ -313,9 +330,46 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         });
         this.addEventListener('toast-error', (e) => this.toastError(e) );
         this.addEventListener('toast-message', (e) => this.toastMessage(e) );
-        
+        Polymer.RenderStatus.afterNextRender(this, () => {
+          this._registerServiceWorker();
+        });
       }
       
+      // https://github.com/abdonrd/polymer-pokedex
+      _registerServiceWorker() {
+        navigator.serviceWorker.register('service-worker.js', {
+          scope: Polymer.rootPath
+        }).then(registration => {
+          registration.onupdatefound = () => {
+            const installingWorker = registration.installing;
+
+            installingWorker.onstatechange = () => {
+              console.log('installingWorker.state', installingWorker.state)
+              switch (installingWorker.state) {
+                case 'installed':
+                  if (!navigator.serviceWorker.controller) {
+                    this.$.toastWebsiteOffline.open();
+                  } else {
+                    navigator.serviceWorker.controller.onstatechange = event => {
+                      if (event.target.state === 'redundant') {
+                        this.$.toastWebsiteUpdated.open();
+                      }
+                    };
+                  }
+                  break;
+                case 'redundant':
+                  throw Error('The installing Service Worker became redundant.');
+                default:
+                  break;
+              }
+            };
+          };
+        }).catch(error => {
+          // eslint-disable-next-line no-console
+          console.error('Service Worker registration failed:', error);
+        });
+      }
+
       _routePageChanged(page) {
         // If no page was found in the route data, page will be an empty string.
         // Default to 'home' in that case.
@@ -362,6 +416,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       doLogout() {
         this.$.userService.logout();
+      }
+
+      _reloadWebsite() {
+        window.location.reload();
       }
     }
 
